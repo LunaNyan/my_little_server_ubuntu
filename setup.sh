@@ -3,7 +3,8 @@
 # Load config
 . config.sh
 
-# first, go to your glorious home
+# first, remember current directory, then go to your glorious home
+cwd=$(pwd)
 cd ~
 
 # Make home structure
@@ -35,7 +36,7 @@ mv ./dragon-zsh-theme/dragon.zsh-theme ~/.oh-my-zsh/custom/themes/dragon.zsh-the
 rm -rfv ./dragon-zsh-theme
 
 # (Optional) Install Jupyter
-if [ "$jupyter" = true ] ; then
+if [ "$c_jupyter" = true ] ; then
 	pip3 install jupyterlab -y
 	jupyter notebook --generate-config
 	sed "s/#c.NotebookApp.ip = 'localhost'/c.NotebookApp.ip = '*'/" ~/.jupyter/jupyter_notebook_config.py
@@ -45,7 +46,7 @@ if [ "$jupyter" = true ] ; then
 fi
 
 # (Optional) Set iptables rules
-if [ "$iptables" = true ] ; then
+if [ "$c_iptables" = true ] ; then
 	iptables -A INPUT -i lo -j ACCEPT
 	iptables -A OUTPUT -o lo -j ACCEPT
 	iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -62,4 +63,16 @@ if [ "$iptables" = true ] ; then
 	ip6tables -A INPUT -j LOG
 	ip6tables -A FORWARD -j LOG
 	netfilter-persistent save
+fi
+
+# (Optional) Install Minecraft Server
+if [ "$c_mcserver" = true ] ; then
+    sudo apt install openjdk-8-jre-headless
+    cd apps
+    mkdir minecraft_server
+    cd minecraft_server
+    wget -O server.jar $c_mcserver_uri
+    cp $cwd/toolbox/server.properties .
+    cp $cwd/toolbox/server.sh .
+    echo "eula=true" > eula.txt
 fi
