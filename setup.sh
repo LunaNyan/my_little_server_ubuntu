@@ -7,7 +7,7 @@
 cwd=$(pwd)
 cd ~
 
-# Make home structure
+# Make minimal home structure
 mkdir apps workspace
 
 # Update
@@ -63,6 +63,15 @@ if [ "$c_iptables" = true ] ; then
 	ip6tables -A INPUT -j LOG
 	ip6tables -A FORWARD -j LOG
 	netfilter-persistent save
+fi
+
+# (Optional) Block cn ip
+if ["$c_blockcnip" = true ] ; then
+	git clone https://github.com/LunaNyan/china_fucking
+	cd china_fucking
+	sudo ./china_fucking_iptables.sh
+	cd ..
+	rm -rf china_fucking
 fi
 
 # (Optional) Install Minecraft Server

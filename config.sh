@@ -9,3 +9,6 @@ c_iptables=true
 c_mcserver=false
 # uri to minecraft server package
 c_mcserver-uri="https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar"
+
+# Block cn_ip?
+c_blockcnip=false
